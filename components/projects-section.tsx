@@ -9,14 +9,14 @@ export function ProjectsSection() {
       title: "Innovative Conversational BI Tool",
       description:
         "An innovative conversational BI tool that allows users to ask questions and get answers in natural language, using advanced AI models and a custom-built vector database.",
-      image: "/Conversational_BI.png",
+      image: "./conversational_BI.png",
       tags: ["Python", "GENAI", "Plotly", "React","Graphics walker"],
     },
     {
       title: "Intelligent Assistant for Product-Based Websites (LLM-Driven)",
       description:
         "An AI-powered assistant that simplifies complex financial products with smart discovery, comparisons, and personalized guidance.",
-      image: "/smart_assist.png",
+      image: "./smart_assist.png",
       tags: ["Python", "LLM", "RAG", "React"],
       github: "#",
       demo: "#",
@@ -25,7 +25,7 @@ export function ProjectsSection() {
       title: "Enterprise-Scale RAG Pipeline for Intelligent Q&A and Pitch Deck Generation",
       description:
         "A scalable RAG system that transforms organizational data into instant insights and auto-generated pitch decks",
-      image: "/Intelligent_Q&A.png",
+      image: "./Intelligent_Q&A.png",
       tags: ["Python", "Prompt Engineering", "React", "Node.js"],
       github: "#",
       demo: "#",
@@ -34,7 +34,7 @@ export function ProjectsSection() {
       title: "Enterprise RAG Chatbot",
       description:
         "A smart matchmaking chatbot that retrieves and answers queries from data with precision",
-      image: "/Enterprice_RAG.png",
+      image: "./Enterprice_RAG.png",
       tags: ["Python", "LLM", "RAG", "React"],
       github: "#",
       demo: "#",
@@ -43,7 +43,7 @@ export function ProjectsSection() {
       title: "Theme Recommender by using current trends for our own website",
       description:
         "A trend-driven recommender that suggests website themes by blending live analytics with market intelligence.",
-      image: "/Theme_Recommender.png",
+      image: "./Theme_Recommender.png",
       tags: ["Python", "Vector DB", "RAG", "Google Analytics"],
       github: "#",
       demo: "#",
@@ -52,7 +52,7 @@ export function ProjectsSection() {
       title: "LLM Powered hiring assistant",
       description:
         "An AI hiring copilot that generates job descriptions, builds Boolean searches, and analyzes resumes effortlessly",
-      image: "/Scoutigo.png",
+      image: "./Scoutigo.png",
       tags: ["Python", "Prompt Engineering", "Boolean strings", "Image classifier"],
       github: "#",
       demo: "#",
