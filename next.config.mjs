@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+const basePath =
+  process.env.NEXT_PUBLIC_BASE_PATH ||
+  (process.env.GITHUB_ACTIONS === "true" ? "/My-New-portfolio" : "")
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Static GitHub Pages export only when CI sets NEXT_PUBLIC_BASE_PATH
   ...(basePath
     ? {
         output: "export",
@@ -20,6 +21,10 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+  },
+  env: {
+    // Ensure client bundles always see the same base path used by next.config
+    NEXT_PUBLIC_BASE_PATH: basePath,
   },
 }
 
