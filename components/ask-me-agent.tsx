@@ -5,6 +5,13 @@ import { chatChips, chatQA, matchChatKey } from "@/lib/portfolio-data"
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
+function shouldUseLocalAsk() {
+  if (basePath) return true
+  if (typeof window === "undefined") return false
+  const host = window.location.hostname
+  return host.endsWith("github.io") || host.endsWith("githubusercontent.com")
+}
+
 type Msg = {
   role: "user" | "bot"
   text: string
@@ -87,14 +94,14 @@ export function AskMeAgent() {
       typeOut(qa.a, qa.sources)
     }
 
-    // Static GitHub Pages has no Route Handlers — skip the API entirely.
-    if (basePath) {
+    // Static hosts (GitHub Pages) have no Route Handlers — never POST /api/ask there.
+    if (shouldUseLocalAsk()) {
       window.setTimeout(answerLocally, 450)
       return
     }
 
     try {
-      const res = await fetch(`${basePath}/api/ask`, {
+      const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, history }),
