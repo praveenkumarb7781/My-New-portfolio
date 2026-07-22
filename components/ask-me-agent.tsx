@@ -82,21 +82,34 @@ export function AskMeAgent() {
       { role: "bot", text: "", sources: [], phase: "retrieving" },
     ])
 
+    const answerLocally = () => {
+      const qa = chatQA[matchChatKey(q)]
+      typeOut(qa.a, qa.sources)
+    }
+
+    // Static GitHub Pages has no Route Handlers — skip the API entirely.
+    if (basePath) {
+      window.setTimeout(answerLocally, 450)
+      return
+    }
+
     try {
       const res = await fetch(`${basePath}/api/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, history }),
       })
+      const contentType = res.headers.get("content-type") || ""
+      if (!res.ok || !contentType.includes("application/json")) {
+        throw new Error("Ask API unavailable")
+      }
       const data = (await res.json()) as { answer?: string; sources?: string[]; error?: string }
-      if (!res.ok || !data.answer) {
+      if (!data.answer) {
         throw new Error(data.error || "Request failed")
       }
       typeOut(data.answer, data.sources?.length ? data.sources : ["résumé"])
     } catch {
-      // GitHub Pages has no API routes — use grounded local résumé answers
-      const qa = chatQA[matchChatKey(q)]
-      typeOut(qa.a, qa.sources)
+      answerLocally()
     }
   }
 
