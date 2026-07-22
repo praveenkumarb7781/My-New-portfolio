@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Space_Grotesk, Space_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
+import { withBasePath } from "@/lib/utils"
 import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({
@@ -24,9 +25,9 @@ export const metadata: Metadata = {
     "Applied AI Engineer in Chennai — RAG, agents & real-time ML. 6 shipped products across BFSI, recruitment & enterprise analytics.",
   generator: "v0.app",
   icons: {
-    icon: [{ url: "/favicon.png", type: "image/png" }],
-    shortcut: "/favicon.png",
-    apple: [{ url: "/apple-touch-icon.png", type: "image/png" }],
+    icon: [{ url: withBasePath("/favicon.png"), type: "image/png" }],
+    shortcut: withBasePath("/favicon.png"),
+    apple: [{ url: withBasePath("/apple-touch-icon.png"), type: "image/png" }],
   },
 }
 
