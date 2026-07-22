@@ -1,7 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { chatChips } from "@/lib/portfolio-data"
+import { chatChips, chatQA, matchChatKey } from "@/lib/portfolio-data"
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
 type Msg = {
   role: "user" | "bot"
@@ -81,7 +83,7 @@ export function AskMeAgent() {
     ])
 
     try {
-      const res = await fetch("/api/ask", {
+      const res = await fetch(`${basePath}/api/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: q, history }),
@@ -91,20 +93,10 @@ export function AskMeAgent() {
         throw new Error(data.error || "Request failed")
       }
       typeOut(data.answer, data.sources?.length ? data.sources : ["résumé"])
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Something went wrong talking to the résumé agent."
-      setMsgs((s) => {
-        const m = s.slice()
-        m[m.length - 1] = {
-          role: "bot",
-          text: message,
-          sources: ["error"],
-          phase: "done",
-        }
-        return m
-      })
-      setStreaming(false)
+    } catch {
+      // GitHub Pages has no API routes — use grounded local résumé answers
+      const qa = chatQA[matchChatKey(q)]
+      typeOut(qa.a, qa.sources)
     }
   }
 
