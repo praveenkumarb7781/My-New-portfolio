@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Space_Grotesk, Space_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { withBasePath } from "@/lib/site"
 import "./globals.css"
@@ -39,6 +40,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${spaceGrotesk.variable} ${spaceMono.variable} font-sans antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
+        <Analytics />
       </body>
     </html>
   )

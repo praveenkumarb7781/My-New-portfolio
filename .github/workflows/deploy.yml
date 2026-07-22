@@ -18,6 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      DEPLOY_TARGET: pages
       NEXT_PUBLIC_BASE_PATH: /My-New-portfolio
     steps:
       - name: Checkout

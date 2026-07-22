@@ -6,13 +6,10 @@ import { chatChips, chatQA, matchChatKey } from "@/lib/portfolio-data"
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
 
 function shouldUseLocalAsk() {
-  // Prefer local answers whenever we are not on a local Next server with /api/ask.
+  // Static GitHub Pages has no /api/ask — use local résumé answers there only.
   if (basePath) return true
   if (typeof window === "undefined") return false
-  const { hostname, protocol } = window.location
-  if (hostname === "localhost" || hostname === "127.0.0.1") return false
-  // Any static host (GitHub Pages, etc.)
-  return protocol === "https:"
+  return window.location.hostname.endsWith("github.io")
 }
 
 type Msg = {

@@ -1,11 +1,14 @@
 /** @type {import('next').NextConfig} */
-const basePath =
-  process.env.NEXT_PUBLIC_BASE_PATH ||
-  (process.env.GITHUB_ACTIONS === "true" ? "/My-New-portfolio" : "")
+// GitHub Pages static export only when CI sets DEPLOY_TARGET=pages.
+// Vercel / local builds keep API routes for live Ask-me.
+const isPages = process.env.DEPLOY_TARGET === "pages"
+const basePath = isPages
+  ? process.env.NEXT_PUBLIC_BASE_PATH || "/My-New-portfolio"
+  : process.env.NEXT_PUBLIC_BASE_PATH || ""
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  ...(basePath
+  ...(isPages
     ? {
         output: "export",
         basePath,
@@ -23,7 +26,6 @@ const nextConfig = {
     unoptimized: true,
   },
   env: {
-    // Ensure client bundles always see the same base path used by next.config
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
 }
