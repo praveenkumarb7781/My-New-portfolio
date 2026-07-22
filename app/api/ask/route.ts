@@ -1,5 +1,4 @@
 import { ASK_SYSTEM_INSTRUCTION, buildPortfolioContext } from "@/lib/ask-context"
-import { chatQA, matchChatKey } from "@/lib/portfolio-data"
 import { NextResponse } from "next/server"
 
 export const runtime = "nodejs"
@@ -38,18 +37,9 @@ function parseModelJson(raw: string): { answer: string; sources: string[] } {
       : []
     if (answer) return { answer, sources: sources.length ? sources : ["résumé"] }
   } catch {
-    /* fall through */
+    /* fall through — model returned plain text */
   }
   return { answer: cleaned || "I couldn't form an answer from the résumé right now.", sources: ["résumé"] }
-}
-
-function localAnswer(question: string) {
-  const qa = chatQA[matchChatKey(question)]
-  return {
-    answer: qa.a,
-    sources: qa.sources,
-    fallback: true as const,
-  }
 }
 
 function isRetryable(message: string, status: number) {
@@ -74,14 +64,14 @@ async function callChatCompletions(
     const res = await fetch(url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${apiKey.trim()}`,
         "Content-Type": "application/json",
         ...extraHeaders,
       },
       body: JSON.stringify({
         model,
-        temperature: 0.4,
-        max_tokens: 512,
+        temperature: 0.5,
+        max_tokens: 700,
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
@@ -117,11 +107,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Question must be 1–800 characters." }, { status: 400 })
   }
 
-  const groqKey = process.env.GROQ_API_KEY
-  const openRouterKey = process.env.OPENROUTER_API_KEY
+  const groqKey = process.env.GROQ_API_KEY?.trim()
+  const openRouterKey = process.env.OPENROUTER_API_KEY?.trim()
 
   if (!groqKey && !openRouterKey) {
-    return NextResponse.json(localAnswer(question))
+    return NextResponse.json(
+      {
+        error:
+          "No LLM API key on this deployment. Set GROQ_API_KEY (or OPENROUTER_API_KEY) in Vercel → Settings → Environment Variables, then Redeploy.",
+      },
+      { status: 503 },
+    )
   }
 
   const history = (body.history || [])
@@ -132,13 +128,16 @@ export async function POST(req: Request) {
 
   const system = `${ASK_SYSTEM_INSTRUCTION}
 
+For greetings or small talk, reply briefly in first person, then invite a question about my work.
+Always return the JSON shape requested above.
+
 ## Résumé context
 ${buildPortfolioContext()}`
 
   const user = `${history ? `## Recent chat\n${history}\n\n` : ""}## Question\n${question}`
 
-  let lastRetryable = false
   let lastMessage = "Model request failed."
+  const attempts: string[] = []
 
   if (groqKey) {
     for (const model of GROQ_MODELS) {
@@ -151,13 +150,17 @@ ${buildPortfolioContext()}`
       )
       if (result.ok) {
         const { answer, sources } = parseModelJson(result.raw)
-        return NextResponse.json({ answer, sources, model, provider: "groq" })
+        return NextResponse.json({
+          answer,
+          sources,
+          model,
+          provider: "groq",
+          mode: "llm",
+        })
       }
       lastMessage = result.message
-      if (isRetryable(result.message, result.status)) {
-        lastRetryable = true
-        continue
-      }
+      attempts.push(`groq/${model}: ${result.message}`)
+      if (!isRetryable(result.message, result.status)) break
     }
   }
 
@@ -170,25 +173,31 @@ ${buildPortfolioContext()}`
         system,
         user,
         {
-          "HTTP-Referer": process.env.OPENROUTER_SITE_URL || "http://localhost:3000",
+          "HTTP-Referer": process.env.OPENROUTER_SITE_URL || "https://vercel.app",
           "X-Title": process.env.OPENROUTER_APP_NAME || "Praveen Kumar Portfolio",
         },
       )
       if (result.ok) {
         const { answer, sources } = parseModelJson(result.raw)
-        return NextResponse.json({ answer, sources, model, provider: "openrouter" })
+        return NextResponse.json({
+          answer,
+          sources,
+          model,
+          provider: "openrouter",
+          mode: "llm",
+        })
       }
       lastMessage = result.message
-      if (isRetryable(result.message, result.status)) {
-        lastRetryable = true
-        continue
-      }
+      attempts.push(`openrouter/${model}: ${result.message}`)
+      if (!isRetryable(result.message, result.status)) break
     }
   }
 
-  if (lastRetryable) {
-    return NextResponse.json(localAnswer(question))
-  }
-
-  return NextResponse.json({ error: lastMessage }, { status: 502 })
+  return NextResponse.json(
+    {
+      error: lastMessage,
+      attempts,
+    },
+    { status: 502 },
+  )
 }

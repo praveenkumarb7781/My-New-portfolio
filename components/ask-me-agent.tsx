@@ -107,16 +107,29 @@ export function AskMeAgent() {
         body: JSON.stringify({ question: q, history }),
       })
       const contentType = res.headers.get("content-type") || ""
-      if (!res.ok || !contentType.includes("application/json")) {
-        throw new Error("Ask API unavailable")
-      }
-      const data = (await res.json()) as { answer?: string; sources?: string[]; error?: string }
-      if (!data.answer) {
-        throw new Error(data.error || "Request failed")
+      const data = contentType.includes("application/json")
+        ? ((await res.json()) as {
+            answer?: string
+            sources?: string[]
+            error?: string
+            mode?: string
+            provider?: string
+          })
+        : null
+
+      if (!res.ok || !data?.answer) {
+        throw new Error(data?.error || `Ask API failed (${res.status})`)
       }
       typeOut(data.answer, data.sources?.length ? data.sources : ["résumé"])
-    } catch {
-      answerLocally()
+    } catch (err) {
+      // Only GitHub Pages should silently use canned answers.
+      if (shouldUseLocalAsk()) {
+        answerLocally()
+        return
+      }
+      const message =
+        err instanceof Error ? err.message : "Something went wrong talking to the résumé agent."
+      typeOut(message, ["error"])
     }
   }
 
