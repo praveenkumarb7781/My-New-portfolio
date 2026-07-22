@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { contact } from "@/lib/portfolio-data"
+import { withBasePath } from "@/lib/utils"
 
 const navItems = [
   { href: "#pipeline", label: "pipeline" },
@@ -12,6 +13,7 @@ const navItems = [
 
 export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const resumeHref = withBasePath(contact.resume)
 
   return (
     <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-[rgba(244,241,234,0.72)] px-5 py-3.5 backdrop-blur-[12px] sm:px-7">
@@ -35,7 +37,7 @@ export function Navigation() {
           </a>
         ))}
         <a
-          href={contact.resume}
+          href={resumeHref}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-[7px] bg-accent px-3.5 py-[7px] font-mono text-xs font-semibold text-cream hover:text-cream hover:opacity-90"
@@ -66,7 +68,7 @@ export function Navigation() {
             </a>
           ))}
           <a
-            href={contact.resume}
+            href={resumeHref}
             target="_blank"
             rel="noopener noreferrer"
             className="w-fit rounded-[7px] bg-accent px-3.5 py-[7px] font-mono text-xs font-semibold text-cream"
