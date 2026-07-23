@@ -5,7 +5,6 @@ import { contact } from "@/lib/portfolio-data"
 import { withBasePath } from "@/lib/utils"
 
 const navItems = [
-  { href: "#pipeline", label: "pipeline" },
   { href: "#products", label: "products" },
   { href: "#ask", label: "ask me" },
   { href: "#contact", label: "contact" },
@@ -17,13 +16,14 @@ export function Navigation() {
 
   return (
     <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-[rgba(244,241,234,0.72)] px-5 py-3.5 backdrop-blur-[12px] sm:px-7">
-      <a href="#top" className="flex items-center gap-2.5 text-ink hover:text-ink">
+      <a href="#top" className="flex items-center gap-2.5 text-ink hover:text-ink" aria-label="Praveen Kumar home">
         <span className="flex h-[26px] w-[26px] items-center justify-center rounded-md border-[1.5px] border-accent font-mono text-[11px] font-bold text-accent">
           PK
         </span>
-        <span className="font-sans text-sm font-semibold">Praveen Kumar</span>
-        <span className="hidden h-1.5 w-1.5 animate-ring rounded-full bg-accent sm:block" />
-        <span className="hidden font-mono text-[10px] font-normal text-ink-faint sm:inline">available</span>
+        <span className="h-1.5 w-1.5 animate-ring rounded-full bg-accent" />
+        <span className="font-mono text-[10px] font-normal tracking-[0.06em] text-ink-faint uppercase">
+          System online
+        </span>
       </a>
 
       <div className="hidden items-center gap-[22px] md:flex">

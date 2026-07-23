@@ -3,10 +3,13 @@ import { contact } from "@/lib/portfolio-data"
 export function HeroSection() {
   return (
     <section id="pipeline" className="mx-auto max-w-[1180px] px-5 pb-10 pt-[74px] sm:px-7">
-      <div className="mb-5 flex animate-rise items-center gap-2.5" style={{ animationDelay: "0.05s" }}>
-        <span className="h-[7px] w-[7px] animate-ring rounded-full bg-accent" />
-        <span className="font-mono text-xs tracking-[0.06em] text-ink-muted">
-          SYSTEM ONLINE · APPLIED AI ENGINEER
+      <div className="mb-5 flex animate-rise flex-wrap items-center gap-x-2.5 gap-y-1" style={{ animationDelay: "0.05s" }}>
+        <span className="font-sans text-[clamp(22px,3vw,32px)] font-semibold tracking-[-0.02em] text-ink">
+          Praveen Kumar
+        </span>
+        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+        <span className="font-sans text-[clamp(18px,2.4vw,26px)] font-medium tracking-[-0.01em] text-ink-muted">
+          Applied AI Engineer
         </span>
       </div>
 

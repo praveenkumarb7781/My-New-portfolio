@@ -1,29 +1,39 @@
-import { stackList } from "@/lib/portfolio-data"
+import { experienceRoles, stackList } from "@/lib/portfolio-data"
 
 export function ExperienceSection() {
   return (
     <section className="mx-auto max-w-[1180px] px-5 py-[34px] pb-10 sm:px-7">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr]">
         <div>
-          <h2 className="mb-[22px] font-sans text-[26px] font-semibold">Experience</h2>
+          <div className="mb-[22px] flex flex-wrap items-baseline gap-3">
+            <h2 className="m-0 font-sans text-[26px] font-semibold">Experience</h2>
+          </div>
+
           <div className="relative border-l-2 border-border-strong pl-[22px]">
-            <span className="absolute left-[-7px] top-1 h-3 w-3 rounded-full bg-accent shadow-[0_0_0_4px_#F4F1EA]" />
-            <div className="flex flex-wrap justify-between gap-2">
-              <div className="font-sans text-[17px] font-semibold">Associate AI Software Engineer</div>
-              <div className="font-mono text-xs text-accent">Jan 2025 — Present</div>
-            </div>
-            <div className="mb-3 mt-1 font-mono text-[13px] text-ink-muted">Xerago · Chennai, TN</div>
-            <ul className="m-0 list-disc space-y-1 pl-[18px] font-sans text-[13.5px] leading-[1.7] text-ink-body">
-              <li>
-                Designed &amp; shipped 6 enterprise AI products — RAG pipelines, multi-agent systems,
-                real-time ML inference and conversational BI across BFSI, recruitment and SaaS.
-              </li>
-              <li>
-                Led internal LLM benchmarking (GPT-4, Claude 3, Mistral, Gemini) to tune
-                cost/performance; mentored juniors on pipeline architecture &amp; LangChain best
-                practices.
-              </li>
-            </ul>
+            {experienceRoles.map((role, idx) => (
+              <div
+                key={`${role.title}-${role.period}`}
+                className={`relative ${idx === experienceRoles.length - 1 ? "" : "mb-8"}`}
+              >
+                <span
+                  className={`absolute left-[-29px] top-1 h-3 w-3 rounded-full shadow-[0_0_0_4px_#F4F1EA] ${
+                    role.current ? "animate-ring bg-accent" : "bg-border-strong"
+                  }`}
+                />
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <div className="font-sans text-[17px] font-semibold">{role.title}</div>
+                  <div className="font-mono text-xs text-accent">{role.period}</div>
+                </div>
+                <div className="mb-3 mt-1 font-mono text-[13px] text-ink-muted">
+                  {role.company} · {role.location}
+                </div>
+                <ul className="m-0 list-disc space-y-1 pl-[18px] font-sans text-[13.5px] leading-[1.7] text-ink-body">
+                  {role.bullets.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -39,7 +49,27 @@ export function ExperienceSection() {
             </div>
           </div>
 
-          <h3 className="mb-3 mt-[26px] font-sans text-[15px] font-semibold text-ink-muted">Stack</h3>
+          <h3 className="mb-3 mt-[26px] font-sans text-[15px] font-semibold text-ink-muted">
+            Growth path
+          </h3>
+          <div className="mb-6 flex flex-wrap items-center gap-2 font-mono text-[11px]">
+            {["Intern", "Trainee AI Engineer", "Associate AI Software Engineer"].map((step, i, arr) => (
+              <span key={step} className="contents">
+                <span
+                  className={`rounded-md border px-2.5 py-1 ${
+                    i === arr.length - 1
+                      ? "border-accent bg-[rgba(224,83,47,0.09)] font-bold text-accent"
+                      : "border-border-strong text-ink-body"
+                  }`}
+                >
+                  {step}
+                </span>
+                {i < arr.length - 1 && <span className="text-ink-faint">→</span>}
+              </span>
+            ))}
+          </div>
+
+          <h3 className="mb-3 font-sans text-[15px] font-semibold text-ink-muted">Stack</h3>
           <div>
             {stackList.map((s) => (
               <span

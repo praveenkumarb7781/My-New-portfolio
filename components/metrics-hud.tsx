@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react"
 
 const SPARK_PATH = "M0,14 L12,9 L24,16 L36,6 L48,12 L60,4 L72,14 L84,7 L96,11"
 
+type MetricDef =
+  | { kind: "count"; target: number; label: string; prefix?: string; suffix?: string }
+  | { kind: "latency"; target: number; label: string }
+
 export function MetricsHud() {
   const ref = useRef<HTMLElement>(null)
   const [progress, setProgress] = useState(0)
@@ -34,12 +38,26 @@ export function MetricsHud() {
     return () => io.disconnect()
   }, [])
 
-  const metrics = [
-    { value: String(Math.round(6 * progress)), label: "products shipped" },
-    { value: `<${Math.round(200 * progress)}ms`, label: "query latency" },
-    { value: String(Math.round(4 * progress)), label: "LLMs in production" },
-    { value: (8.54 * progress).toFixed(2), label: "CGPA" },
+  // Highlights grounded in shipped work (resume) — not education / vague LLM counts.
+  const defs: MetricDef[] = [
+    { kind: "count", target: 6, label: "products shipped" },
+    { kind: "latency", target: 200, label: "query latency" },
+    { kind: "count", target: 31, label: "AI guardrails" },
+    { kind: "latency", target: 100, label: "ML inference" },
   ]
+
+  const metrics = defs.map((d) => {
+    if (d.kind === "latency") {
+      return {
+        label: d.label,
+        value: `<${Math.round(d.target * progress)}ms`,
+      }
+    }
+    return {
+      label: d.label,
+      value: `${d.prefix ?? ""}${Math.round(d.target * progress)}${d.suffix ?? ""}`,
+    }
+  })
 
   return (
     <section ref={ref} className="mx-auto max-w-[1180px] px-5 pb-11 pt-[18px] sm:px-7">

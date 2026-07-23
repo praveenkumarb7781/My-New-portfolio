@@ -37,9 +37,24 @@ Built a CLI tool that ingests a product idea and auto-generates a full local Cur
 
 ## Experience
 
-Associate AI Software Engineer — Xerago, Chennai, Tamil Nadu — Jan 2025 – Present
-• Designed and shipped 6 enterprise-grade AI products spanning RAG pipelines, multi-agent systems, real-time ML inference, and conversational BI for clients across BFSI, recruitment, and SaaS verticals.
-• Led internal LLM benchmarking comparing GPT-4, Claude 3, Mistral, and Gemini to optimize cost-performance tradeoffs; mentored junior engineers on AI pipeline architecture and LangChain best practices.
+AI Software Engineer — Xerago, Chennai, Tamil Nadu — Jul 2025 – Present
+• Shipping production Applied AI systems — RAG, multi-agent platforms, real-time ML, and conversational BI for BFSI, recruitment, and SaaS clients.
+• Owns end-to-end delivery across FastAPI + React, multi-model LLM orchestration, and mentoring juniors on pipeline architecture.
+
+AI Engineer — Xerago, Chennai, Tamil Nadu — Jan 2025 – Jun 2025
+• Designed & shipped enterprise GenAI apps with LangChain, RAG pipelines, and full-stack FastAPI / React journeys.
+• Built multi-model orchestration (OpenAI, Claude, Mistral), prompt evaluation workflows, and Smart Assist integrations that lifted engagement ~30%.
+
+Intern — Artificial Intelligence (Innovation) — Xerago, Chennai, Tamil Nadu — Nov 2024 – Dec 2024
+• Built AI prototypes with LLMs, ML algorithms, prompt workflows, and early agentic patterns on the Innovation team.
+
+Technical Trainer — CSC Computer Education Pvt Ltd, Cuddalore, Tamil Nadu — Mar 2024 – Jul 2024
+• Trained learners on core computing and technology fundamentals.
+
+Data Annotator — TECHY GEEKS, Puducherry — Dec 2023 – Jan 2024
+• Labeled and structured datasets for ML workflows.
+
+Career map at Xerago: Intern → AI Engineer → AI Software Engineer (Applied AI).
 
 ## Technical Skills
 

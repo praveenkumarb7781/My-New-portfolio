@@ -32,9 +32,6 @@ export function ProjectsSection() {
                   <div className="font-sans text-[17px] font-semibold text-ink">{p.name}</div>
                   <div className="mt-0.5 font-sans text-[12.5px] text-ink-muted">{p.tagline}</div>
                 </div>
-                <span className="shrink-0 rounded-[7px] border border-[rgba(224,83,47,0.25)] bg-[rgba(224,83,47,0.09)] px-2.5 py-1.5 font-mono text-[11px] font-bold text-accent">
-                  {p.metric}
-                </span>
                 <span className="w-4 shrink-0 text-center font-mono text-xs text-ink-faint">
                   {open ? "−" : "+"}
                 </span>

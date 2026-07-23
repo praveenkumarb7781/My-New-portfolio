@@ -219,3 +219,47 @@ export const contact = {
   location: "Chennai, IN",
   company: "Xerago",
 }
+
+export type ExperienceRole = {
+  title: string
+  company: string
+  location: string
+  period: string
+  current?: boolean
+  bullets: string[]
+}
+
+/** Xerago progression map (Intern → Applied AI), plus earlier roles. */
+export const experienceRoles: ExperienceRole[] = [
+  {
+    title: "AI Software Engineer",
+    company: "Xerago",
+    location: "Chennai, TN",
+    period: "Jul 2025 — Present",
+    current: true,
+    bullets: [
+      "Shipping production Applied AI systems — RAG, multi-agent platforms, real-time ML, and conversational BI for BFSI, recruitment, and SaaS clients.",
+      "Owns end-to-end delivery across FastAPI + React, multi-model LLM orchestration, and mentoring juniors on pipeline architecture.",
+    ],
+  },
+  {
+    title: "AI Engineer",
+    company: "Xerago",
+    location: "Chennai, TN",
+    period: "Jan 2025 — Jun 2025",
+    bullets: [
+      "Designed & shipped enterprise GenAI apps with LangChain, RAG pipelines, and full-stack FastAPI / React journeys.",
+      "Built multi-model orchestration (OpenAI, Claude, Mistral), prompt evaluation workflows, and Smart Assist integrations that lifted engagement ~30%.",
+    ],
+  },
+  {
+    title: "Intern — Artificial Intelligence (Innovation)",
+    company: "Xerago",
+    location: "Chennai, TN",
+    period: "Nov 2024 — Dec 2024",
+    bullets: [
+      "Built AI prototypes with LLMs, ML algorithms, prompt workflows, and early agentic patterns on the Innovation team.",
+    ],
+  }
+]
+
