@@ -38,7 +38,6 @@ export function MetricsHud() {
     return () => io.disconnect()
   }, [])
 
-  // Highlights grounded in shipped work (resume) — not education / vague LLM counts.
   const defs: MetricDef[] = [
     { kind: "count", target: 6, label: "products shipped" },
     { kind: "latency", target: 200, label: "query latency" },
@@ -61,7 +60,27 @@ export function MetricsHud() {
 
   return (
     <section ref={ref} className="mx-auto max-w-[1180px] px-5 pb-11 pt-[18px] sm:px-7">
-      <div className="grid grid-cols-2 gap-3.5 md:grid-cols-4">
+      {/* Mobile: compact rows — no sparklines (they collide with labels) */}
+      <div className="overflow-hidden rounded-xl border border-border bg-cream-card md:hidden">
+        {metrics.map((m, i) => (
+          <div
+            key={m.label}
+            className={`flex items-baseline justify-between gap-4 px-4 py-3.5 ${
+              i < metrics.length - 1 ? "border-b border-border" : ""
+            }`}
+          >
+            <span className="font-mono text-[11px] uppercase tracking-[0.07em] text-ink-muted">
+              {m.label}
+            </span>
+            <span className="font-sans text-[22px] font-bold tracking-[-0.02em] text-ink tabular-nums">
+              {m.value}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: original card grid + sparkline animation */}
+      <div className="hidden grid-cols-2 gap-3.5 md:grid md:grid-cols-4">
         {metrics.map((m) => (
           <div
             key={m.label}
@@ -70,14 +89,14 @@ export function MetricsHud() {
             <div className="font-sans text-[clamp(26px,3vw,38px)] font-bold tracking-[-0.02em] text-ink">
               {m.value}
             </div>
-            <div className="mt-1 font-mono text-[10.5px] uppercase tracking-[0.07em] text-ink-muted">
+            <div className="relative z-10 mt-1 max-w-[70%] font-mono text-[10.5px] uppercase tracking-[0.07em] text-ink-muted">
               {m.label}
             </div>
             <svg
               viewBox="0 0 96 22"
               width="72"
               height="18"
-              className="absolute bottom-3 right-3 opacity-50"
+              className="pointer-events-none absolute bottom-3 right-3 opacity-50"
               aria-hidden
             >
               <polyline
