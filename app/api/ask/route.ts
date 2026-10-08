@@ -22,8 +22,8 @@ const GROQ_MODELS = [
 
 const OPENROUTER_MODELS = [
   process.env.OPENROUTER_MODEL,
+  "meta-llama/llama-3.3-70b-instruct",
   "google/gemini-2.0-flash-exp:free",
-  "meta-llama/llama-3.3-70b-instruct:free",
   "qwen/qwen-2.5-7b-instruct:free",
 ].filter((m, i, arr): m is string => Boolean(m) && arr.indexOf(m) === i)
 
